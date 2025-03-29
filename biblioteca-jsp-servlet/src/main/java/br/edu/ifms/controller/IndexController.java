@@ -12,7 +12,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import br.edu.ifms.controller.util.DataManipulation;
 import br.edu.ifms.dao.util.Conexao;
+import br.edu.ifms.model.User;
+
+import java.util.Date;
+
 
 
 @WebServlet("/public")
@@ -42,6 +47,10 @@ public class IndexController extends HttpServlet {
 			case "new":
 				newUser(request, response);
 				break;
+			case "insert":
+				saveUser(request, response);
+				break;
+				
 			}
 		}catch(Exception ex) {
 			throw new ServletException(ex);
@@ -52,14 +61,26 @@ public class IndexController extends HttpServlet {
 	private void newUser(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		
-		Connection conexaoJDBC = Conexao.getConexao();
+		RequestDispatcher dispatcher = request.getRequestDispatcher("public/public-new-user.jsp");
+		dispatcher.forward(request, response);
+	}
+	
+	private void saveUser(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		String name= request.getParameter("name");
+		String cpf = request.getParameter("cpf");
+		String birth = request.getParameter("birth");
+		String email = request.getParameter("email");
+		String login = request.getParameter("login");
+		String password = request.getParameter("password");
 		
-		if(conexaoJDBC != null) {
-			System.out.println("Oppened connection");
-		}else {
-			System.out.println("Without Connection");
-		}
+		DataManipulation dateManipulation = new DataManipulation();
+		Date dateBirth = dateManipulation.convertStringData(birth);
 		
+		User user = new User(name, cpf, dateBirth, email, login, password, null);
+		
+		System.out.println(user);
+
 		RequestDispatcher dispatcher = request.getRequestDispatcher("public/public-new-user.jsp");
 		dispatcher.forward(request, response);
 	}
