@@ -76,9 +76,11 @@ public class User {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	public Boolean getActive() {
-		return active;
+	public boolean isActive() {
+	    return Boolean.TRUE.equals(active); // Retorna false se active for null
 	}
+
+
 	public void setActive(Boolean active) {
 		this.active = active;
 	}
