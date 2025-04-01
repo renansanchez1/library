@@ -52,8 +52,8 @@ public class User {
 	public void setCpf(String cpf) {
 		this.cpf = cpf;
 	}
-	public Date getBirth() {
-		return dateBirth;
+	public Date getDateBirth() { 
+	    return dateBirth;
 	}
 	public void setBirth(Date birth) {
 		this.dateBirth = birth;
@@ -77,7 +77,7 @@ public class User {
 		this.password = password;
 	}
 	public boolean isActive() {
-	    return Boolean.TRUE.equals(active); // Retorna false se active for null
+	    return Boolean.TRUE.equals(active); // return false if active == null
 	}
 
 

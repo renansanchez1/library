@@ -6,7 +6,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-
+import java.util.ArrayList;
+import java.util.List;
 
 import br.edu.ifms.dao.util.Conexao;
 import br.edu.ifms.model.User;
@@ -47,7 +48,7 @@ public class UserDAO {
 		
 		ResultSet resultSet = statement.getGeneratedKeys();
 		long id = 0;
-		if(resultSet.next()) //houve algum retorno no ID?
+		if(resultSet.next()) //has any return of register?
 			id = resultSet.getInt("id");
 		statement.close();
 
@@ -56,5 +57,39 @@ public class UserDAO {
 		user.setId(id);
 		return user;
 	}
+	
+	public List<User> listAllUsers() throws SQLException {
+		
+		List<User> listUsers = new ArrayList<User>();
+
+		String sql = "SELECT * FROM usuario";
+
+		conect();
+
+		Statement statement = connection.createStatement();
+		ResultSet resultSet = statement.executeQuery(sql);
+
+		while (resultSet.next()) {
+			long id = resultSet.getLong("id");
+			String nome = resultSet.getString("name");
+			String cpf = resultSet.getString("cpf");
+			Date birth = new Date(resultSet.getDate("date_birth").getTime());
+			String email = resultSet.getString("email");
+			String password = resultSet.getString("password");
+			String login = resultSet.getString("login");
+			boolean active = resultSet.getBoolean("active");
+
+			User user = new User(nome, cpf, birth, email, password, login, active);
+			user.setId(id);
+			listUsers.add(user);
+		}
+		resultSet.close();
+		statement.close();
+
+		desconect();
+
+		return listUsers;
+	}
+
 
 }
