@@ -56,8 +56,14 @@
 								<td>
 									
 									<span> <c:out value= "${user.active=='true' ? 'active' : 'inactive'}" /> </span>
-								</td>								
-							
+								</td>	
+								<td> 																			
+									<a class="btn btn-outline-danger btn-sm"
+									onclick="return confirm('Do you want delete this register?');"
+									href="${pageContext.request.contextPath}/auth/admin?action=delete&id=<c:out value="${user.id}" />">
+									Delete</a>
+								</td>
+																
 							</tr>
 						</c:forEach>
 					</tbody>

@@ -47,10 +47,26 @@ public class AdminController extends HttpServlet {
 				listUser(request, response);
 				break;
 				
+			case "delete":
+				deleteUser(request, response);
+				
 			}
 		}catch(Exception ex) {
 			throw new ServletException(ex);
 		}
+		
+	}
+
+	private void deleteUser(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
+		
+		long id = Long.parseLong(request.getParameter("id"));
+		User user = new User();
+		user.setId(id);
+		userDAO.deleteUser(user);
+		
+		//call the method 'listUser' passing the action = 'list' when the register is deleted'
+		String path = request.getContextPath() + request.getServletPath() + "?action=list";
+		response.sendRedirect(path);
 		
 	}
 

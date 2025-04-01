@@ -22,7 +22,7 @@ public class UserDAO {
 		}
 	}
 
-	private void desconect() throws SQLException {
+	private void disconnect() throws SQLException {
 		if (connection != null && !connection.isClosed()) {
 			connection.close();
 		}
@@ -37,7 +37,7 @@ public class UserDAO {
 		PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 		statement.setString(1, user.getName());
 		statement.setString(2, user.getCpf());
-		Date nascimento = new Date(user.getBirth().getTime());
+		Date nascimento = new Date(user.getDateBirth().getTime());
 		statement.setDate(3, nascimento);
 		statement.setString(4, user.getEmail());
 		statement.setString(5, user.getPassword());
@@ -52,7 +52,7 @@ public class UserDAO {
 			id = resultSet.getInt("id");
 		statement.close();
 
-		desconect();
+		disconnect();
 		
 		user.setId(id);
 		return user;
@@ -86,10 +86,27 @@ public class UserDAO {
 		resultSet.close();
 		statement.close();
 
-		desconect();
+		disconnect();
 
 		return listUsers;
 	}
+	
+	public boolean deleteUser(User user) throws SQLException {
+        String sql = "DELETE FROM usuario where id = ?";
+        
+        conect();
+         
+        PreparedStatement statement = connection.prepareStatement(sql);
+        statement.setLong(1, user.getId());
+         
+        boolean disconnectLine = statement.executeUpdate() > 0; //return a int value if return > 0, the query was executed
+        statement.close();
+        
+        disconnect();
+        
+        return disconnectLine;     
+   }
+
 
 
 }
