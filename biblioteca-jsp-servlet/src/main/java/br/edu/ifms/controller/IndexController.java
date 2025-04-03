@@ -95,5 +95,13 @@ public class IndexController extends HttpServlet {
 
 			
 	}
+	
+//	private void editUser(HttpServletRequest request, HttpServletResponse response)
+//			throws ServletException, IOException {
+//		
+//		RequestDispatcher dispatcher = request.getRequestDispatcher("public/public-new-user.jsp");
+//		dispatcher.forward(request, response);
+//	}
+	
 
 }

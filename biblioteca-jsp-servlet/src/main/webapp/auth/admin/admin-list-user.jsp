@@ -63,6 +63,11 @@
 									href="${pageContext.request.contextPath}/auth/admin?action=delete&id=<c:out value="${user.id}" />">
 									Delete</a>
 								</td>
+								<td> 																			
+									<a class="btn btn-outline-danger btn-sm"
+									href="${pageContext.request.contextPath}/auth/admin?action=update&id=<c:out value="${user.id}" />">
+									Update</a>
+								</td>
 																
 							</tr>
 						</c:forEach>

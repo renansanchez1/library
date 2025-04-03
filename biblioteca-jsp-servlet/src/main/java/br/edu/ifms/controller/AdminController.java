@@ -2,6 +2,7 @@ package br.edu.ifms.controller;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -50,12 +51,44 @@ public class AdminController extends HttpServlet {
 			case "delete":
 				deleteUser(request, response);
 				
+			case "update":
+				editUser(request, response);
+				
 			}
 		}catch(Exception ex) {
 			throw new ServletException(ex);
 		}
 		
 	}
+
+	private void editUser(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
+	    long id = Long.parseLong(request.getParameter("id"));
+	    String name = request.getParameter("name");
+	    String cpf = request.getParameter("cpf");
+	    String email = request.getParameter("email");
+	    String password = request.getParameter("password");
+	    String login = request.getParameter("login");
+	    boolean active = Boolean.parseBoolean(request.getParameter("active"));
+
+	    // Verifica se a data foi enviada
+	    String birthStr = request.getParameter("date_birth");
+	    java.sql.Date birthDate = null;
+	    if (birthStr != null && !birthStr.isEmpty()) {
+	        try {
+	            birthDate = java.sql.Date.valueOf(birthStr); // Formato esperado: "yyyy-MM-dd"
+	        } catch (IllegalArgumentException e) {
+	            System.out.println("Formato de data inválido: " + birthStr);
+	        }
+	    }
+
+	    User user = new User(name, cpf, birthDate, email, password, login, active);
+	    user.setId(id);
+
+	    userDAO.editUser(user);
+
+	    response.sendRedirect(request.getContextPath() + "/auth/admin?action=list");
+	}
+
 
 	private void deleteUser(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
 		
@@ -81,5 +114,9 @@ public class AdminController extends HttpServlet {
 		dispatcher.forward(request, response);
 
 	}
+	
+	
+	
+	
 
 }
